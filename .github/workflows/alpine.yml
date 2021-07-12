@@ -10,29 +10,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: node:${{ matrix.node }}-alpine${{ matrix.alpine }}
+      image: node:${{ matrix.node }}-alpine
     strategy:
       fail-fast: false
       matrix:
         node:
-          - 10
           - 12
           - 14
           - 15
+          - 16
 
         include:
-          - node: 10
-            alpine: "3.9"
           - node: 12
-            alpine: "3.9"
+            python: python2
           - node: 14
-            alpine: "3.10"
+            python: python3
           - node: 15
-            alpine: "3.10"
+            python: python3
+          - node: 16
+            python: python3
 
     steps:
       - name: Install Alpine build tools
-        run: apk add --no-cache python make git gcc g++
+        run: apk add --no-cache ${{ matrix.python }} make git gcc g++
 
       - uses: actions/checkout@v2
 
