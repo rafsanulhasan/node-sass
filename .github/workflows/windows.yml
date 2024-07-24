@@ -8,36 +8,26 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-2019
 
     strategy:
       fail-fast: false
       matrix:
         node:
-          - 12
-          - 14
           - 16
-          - 17
+          - 18
+          - 19
+          - 20
 
         architecture:
           - x64
           - x86
 
-        include:
-          - node: 12
-            os: windows-2016
-          - node: 14
-            os: windows-2016
-          - node: 16
-            os: windows-2019
-          - node: 17
-            os: windows-2019
-
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
           architecture: ${{ matrix.architecture }}
@@ -50,7 +40,7 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: github.repository_owner == 'sass' && github.event_name != 'pull_request'
         with:
           name: ${{ matrix.node }}-${{ matrix.architecture }}
